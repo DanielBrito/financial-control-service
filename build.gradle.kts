@@ -10,6 +10,8 @@ plugins {
 	id("io.gitlab.arturbosch.detekt") version "1.23.7"
 	id("jacoco")
 	id("org.sonarqube") version "5.1.0.4882"
+
+	id("org.flywaydb.flyway") version "11.3.1"
 }
 
 group = "com.polymatus"
@@ -36,6 +38,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
 
 	compileOnly("org.springframework.boot:spring-boot-devtools")
 
