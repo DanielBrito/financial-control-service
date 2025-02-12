@@ -8,5 +8,7 @@ CREATE TABLE expenses(
     place VARCHAR(50),
     url VARCHAR,
     comment VARCHAR,
-    "group" VARCHAR(50)
+    "group" VARCHAR(50),
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
 );
