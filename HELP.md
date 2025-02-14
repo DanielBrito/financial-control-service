@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'com.polymatus.financial-control-service' is invalid and this project uses 'com.polymatus.financial_control_service' instead.
+* The original package name 'com.polymatus.financial-control-service' is invalid and this project uses 'com.polymatus.financialcontrolservice' instead.
 
 # Getting Started
 
