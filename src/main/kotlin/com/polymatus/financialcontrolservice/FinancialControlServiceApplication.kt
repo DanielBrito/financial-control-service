@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class FinancialControlServiceApplication
 
 fun main() {
-       runApplication<FinancialControlServiceApplication>()
+    runApplication<FinancialControlServiceApplication>()
 }
