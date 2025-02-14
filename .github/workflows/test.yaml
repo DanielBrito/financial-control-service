@@ -16,5 +16,4 @@ jobs:
           distribution: 'corretto'
           cache: 'gradle'
       - name: Run Detekt
-        working-directory: loan
         run: ./gradlew detekt
