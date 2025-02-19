@@ -1,5 +1,6 @@
 package com.polymatus.financialcontrolservice.temp
 
+@Suppress("MagicNumber")
 class FizzBuzz {
 
     fun solve(n: Int): List<String> {
