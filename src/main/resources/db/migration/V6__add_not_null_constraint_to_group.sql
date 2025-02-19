@@ -1,0 +1,2 @@
+ALTER TABLE expenses
+ALTER COLUMN "group" SET NOT NULL;
