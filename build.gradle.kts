@@ -79,3 +79,34 @@ configurations.all {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+fun ignorePackagesInJacocoReport(classDirectories: ConfigurableFileCollection) {
+	classDirectories.setFrom(
+		files(
+			classDirectories.files.map {
+				fileTree(it).apply {
+					exclude(
+						"**/polymatus/**/*.java",
+						"**/polymatus/**/*.kts"
+					)
+				}
+			}
+		)
+	)
+}
+
+tasks.test {
+	finalizedBy("jacocoReport")
+}
+
+tasks.register<JacocoReport>("jacocoReport") {
+	sourceSets(sourceSets.main.get())
+	executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
+
+	reports {
+		xml.required.set(true)
+		csv.required.set(false)
+		html.required.set(true)
+	}
+	ignorePackagesInJacocoReport(classDirectories)
+}
