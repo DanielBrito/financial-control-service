@@ -10,7 +10,7 @@ plugins {
 	id("org.unbroken-dome.test-sets") version "4.1.0"
 	id("io.gitlab.arturbosch.detekt") version "1.23.7"
 	id("jacoco")
-	id("org.sonarqube") version "5.1.0.4882"
+	id("org.sonarqube") version "6.1.0.5360"
 }
 
 group = "com.polymatus"
@@ -79,7 +79,7 @@ sonar {
 		property("sonar.host.url", "https://sonarcloud.io")
 		property("sonar.exclusions", "**/polymatus/**/*.java," +
 				"**/polymatus/**/*.kts," +
-				"**/polymatus/**/LoanApplication.kt"
+				"**/polymatus/**/FinancialControlServiceApplication.kt"
 		)
 	}
 }
