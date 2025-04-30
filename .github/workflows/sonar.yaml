@@ -46,7 +46,6 @@ jobs:
         with:
           name: report
           path: build/reports/jacoco
-        working-directory: loan
         run: ./gradlew sonar
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
