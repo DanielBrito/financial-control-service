@@ -79,7 +79,7 @@ sonar {
 		property("sonar.host.url", "https://sonarcloud.io")
 		property("sonar.exclusions", "**/polymatus/**/*.java," +
 				"**/polymatus/**/*.kts," +
-				"**/polymatus/**/LoanApplication.kt"
+				"**/polymatus/**/FinancialControlServiceApplication.kt"
 		)
 	}
 }
