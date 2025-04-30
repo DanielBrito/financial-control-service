@@ -1,4 +1,4 @@
-package com.polymatus.financialcontrolservice.temp
+package com.polymatus.financialcontrolservice.fizzbuzz
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -11,7 +11,7 @@ internal class FizzBuzzTest {
 
     @Nested
     @DisplayName("given an integer n")
-    inner class GivenAnInteger {
+    inner class GivenAnIntegerN {
 
         @Nested
         @DisplayName("when iterating from 1 to n")
