@@ -1,4 +1,4 @@
-package com.polymatus.financialcontrolservice.temp
+package com.polymatus.financialcontrolservice.fizzbuzz
 
 @Suppress("MagicNumber")
 class FizzBuzz {

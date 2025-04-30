@@ -68,6 +68,22 @@ detekt {
 	autoCorrect = true
 }
 
+sonar {
+	val projectKey = System.getenv("SONAR_PROJECT_KEY") ?: ""
+	val organization = System.getenv("SONAR_ORGANIZATION") ?: ""
+
+	properties {
+		property("sonar.projectKey", projectKey)
+		property("sonar.language", "kotlin")
+		property("sonar.organization", organization)
+		property("sonar.host.url", "https://sonarcloud.io")
+		property("sonar.exclusions", "**/polymatus/**/*.java," +
+				"**/polymatus/**/*.kts," +
+				"**/financialcontrolservice/LoanApplication.kt"
+		)
+	}
+}
+
 configurations.all {
 	resolutionStrategy.eachDependency {
 		if (requested.group == "org.jetbrains.kotlin") {
@@ -100,6 +116,9 @@ tasks.test {
 }
 
 tasks.register<JacocoReport>("jacocoReport") {
+	description = "Generates the HTML documentation for this project"
+	group = JavaBasePlugin.DOCUMENTATION_GROUP
+
 	sourceSets(sourceSets.main.get())
 	executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
 
