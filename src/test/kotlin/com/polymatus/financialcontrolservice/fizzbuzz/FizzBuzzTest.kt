@@ -53,6 +53,16 @@ internal class FizzBuzzTest {
 
                 assertThat(result).isEqualTo(expected)
             }
+
+            @Test
+            fun `returns only one element when n is 1`() {
+                val n = 1
+                val expected = listOf("1")
+
+                val result = fizzBuzz.solve(n)
+
+                assertThat(result).isEqualTo(expected)
+            }
         }
     }
 }
