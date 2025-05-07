@@ -5,6 +5,16 @@ on:
     types: [opened, reopened, synchronize]
 
 jobs:
+  docker-hadolint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          ignore: ${{ inputs.ignore-rules }}
+
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -20,7 +30,7 @@ jobs:
 
   unit-test:
     runs-on: ubuntu-latest
-    needs: [ lint ]
+    needs: [docker-hadolint, lint]
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21
@@ -34,7 +44,7 @@ jobs:
 
   mutation-test:
     runs-on: ubuntu-latest
-    needs: [ lint ]
+    needs: [docker-hadolint, lint]
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21
