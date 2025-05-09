@@ -18,7 +18,7 @@ data class ExpenseRequest(
     val category: String,
 
     @field:NotNull(message = "Price is required.")
-    @field:Positive("Price must be greater than R$ 0.00")
+    @field:Positive("Price must be greater than R$ 0,00.")
     val price: Double,
 
     val description: String?,
