@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 class ExpenseController {
 
     @PostMapping("/expenses")
-    fun createExpense(
+    fun create(
         @Valid @RequestBody expenseRequest: ExpenseRequest
     ): ResponseEntity<Any> {
         println("Received request to create expense: $expenseRequest")
