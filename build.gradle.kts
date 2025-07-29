@@ -30,6 +30,8 @@ val assertJVersion = "3.26.3"
 val detektVersion = "1.23.7"
 val mockkVersion = "1.13.12"
 val jacksonVersion = "2.18.2"
+val kotestVersion = "5.9.1"
+val kotestExtensionsSpringVersion = "1.3.0"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
@@ -50,6 +52,10 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.assertj:assertj-core:$assertJVersion")
 	testImplementation("io.mockk:mockk:$mockkVersion")
+	testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+	testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+	testImplementation("io.kotest:kotest-property:$kotestVersion")
+	testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestExtensionsSpringVersion")
 
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
