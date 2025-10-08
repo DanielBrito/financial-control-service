@@ -1,4 +1,4 @@
-CREATE TABLE balance(
+CREATE TABLE balances(
     id SERIAL NOT NULL,
     source VARCHAR(50) NOT NULL,
     amount DECIMAL NOT NULL,

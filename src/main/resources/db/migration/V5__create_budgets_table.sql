@@ -1,11 +1,11 @@
-CREATE TABLE tracking(
+CREATE TABLE budgets(
     id SERIAL NOT NULL,
     expense_id INTEGER NOT NULL,
-    delivery_forecast DATE,
-    code VARCHAR(255),
-    shipping_company VARCHAR(255),
+    place VARCHAR(255) NOT NULL,
+    price DECIMAL NOT NULL,
     url VARCHAR,
-    status VARCHAR(100),
+    description VARCHAR(255),
+    preference INTEGER,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
     FOREIGN KEY (expense_id) REFERENCES expenses(id) ON DELETE CASCADE
