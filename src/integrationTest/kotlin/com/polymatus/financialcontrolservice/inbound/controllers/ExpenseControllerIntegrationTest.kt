@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.post
 
 @SpringBootTest
 @AutoConfigureMockMvc
-internal class ExpenseControllerIntegrationTest: BehaviorSpec() {
+internal class ExpenseControllerIntegrationTest : BehaviorSpec() {
 
     override fun extensions() = listOf(SpringExtension)
 

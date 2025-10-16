@@ -76,6 +76,14 @@ kotlin {
 detekt {
 	toolVersion = detektVersion
 	autoCorrect = true
+
+    source.setFrom(
+        files(
+            "src/main/kotlin",
+            "src/test/kotlin",
+            "src/integrationTest/kotlin"
+        )
+    )
 }
 
 sonar {
