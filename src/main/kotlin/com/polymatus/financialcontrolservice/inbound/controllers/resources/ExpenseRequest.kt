@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.URL
 
 data class ExpenseRequest(
     @field:NotNull(message = "Priority is required.")
-    @field:Range(min = 1, max = 4, "Priority must be between 1 (min) and 4 (max).")
+    @field:Range(min = 1, max = 4, message = "Priority must be between 1 (min) and 4 (max).")
     val priority: Int,
 
     @field:NotBlank(message = "Name is required.")
@@ -18,7 +18,7 @@ data class ExpenseRequest(
     val category: String,
 
     @field:NotNull(message = "Price is required.")
-    @field:Positive("Price must be greater than R$ 0,00.")
+    @field:Positive(message = "Price must be greater than R$ 0,00.")
     val price: Double,
 
     val description: String?,

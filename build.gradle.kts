@@ -26,6 +26,10 @@ repositories {
 	mavenCentral()
 }
 
+testSets {
+    "integrationTest"()
+}
+
 val assertJVersion = "3.26.3"
 val detektVersion = "1.23.7"
 val mockkVersion = "1.13.12"
