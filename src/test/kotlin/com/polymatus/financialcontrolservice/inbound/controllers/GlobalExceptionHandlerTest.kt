@@ -46,7 +46,7 @@ internal class GlobalExceptionHandlerTest : BehaviorSpec({
 
             val response = handler.handleValidationExceptions(exception)
 
-            then("responds with 400 and a map containing all field errors") {
+            then("responds with bad request status code") {
                 assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
             }
 
@@ -69,7 +69,7 @@ internal class GlobalExceptionHandlerTest : BehaviorSpec({
 
             val response = handler.handleJsonParseException(exception)
 
-            then("responds with 400 and an invalid payload message") {
+            then("responds with bad request status code") {
                 assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
             }
 
