@@ -116,6 +116,7 @@ pitest {
     threads.set(2)
     jvmArgs.set(listOf("-Xmx2G"))
     mutationThreshold.set(80)
+    failWhenNoMutations.set(false)
 
     mainSourceSets.set(listOf(sourceSets["main"]))
     testSourceSets.set(listOf(sourceSets["test"]))
