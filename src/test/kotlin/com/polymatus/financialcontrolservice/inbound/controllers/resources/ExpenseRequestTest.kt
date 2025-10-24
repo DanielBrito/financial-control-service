@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 
 // This is just an example of how to apply unit tests in constraint validations.
 
+// TODO: Apply BDD approach to these tests.
 @Disabled("Validated through integration tests")
 internal class ExpenseRequestTest {
 

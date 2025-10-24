@@ -132,16 +132,7 @@ configurations.all {
 	}
 }
 
-tasks.named<Test>("integrationTest") {
-    description = "Runs integration tests"
-    shouldRunAfter("test")
 
-    useJUnitPlatform()
-
-    extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("${layout.buildDirectory}/jacoco/integrationTest.exec"))
-    }
-}
 
 tasks.withType<Test> {
 	useJUnitPlatform()
