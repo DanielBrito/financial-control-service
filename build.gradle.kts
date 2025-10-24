@@ -26,10 +26,6 @@ repositories {
 	mavenCentral()
 }
 
-testSets {
-    "integrationTest"()
-}
-
 val assertJVersion = "3.26.3"
 val detektVersion = "1.23.7"
 val mockkVersion = "1.13.12"
@@ -86,6 +82,12 @@ detekt {
     )
 }
 
+testSets {
+    create("integrationTest") {
+        dirName = "integrationTest"
+    }
+}
+
 sonar {
 	val projectKey = System.getenv("SONAR_PROJECT_KEY") ?: ""
 	val organization = System.getenv("SONAR_ORGANIZATION") ?: ""
@@ -103,14 +105,14 @@ sonar {
 }
 
 pitest {
-    val exludedClasses = listOf(
+    val skippedClasses = listOf(
         "com.polymatus.financialcontrolservice.FinancialControlServiceApplicationKt",
         "com.polymatus.financialcontrolservice.inbound.controllers.*",
     )
 
     junit5PluginVersion.set("1.2.0")
     targetClasses.set(listOf("com.polymatus.*"))
-    excludedClasses.set(exludedClasses)
+    excludedClasses.set(skippedClasses)
     targetTests.set(listOf("com.polymatus.financialcontrolservice.*"))
     outputFormats.set(listOf("HTML"))
     threads.set(2)
@@ -128,6 +130,17 @@ configurations.all {
 			useVersion(io.gitlab.arturbosch.detekt.getSupportedKotlinVersion())
 		}
 	}
+}
+
+tasks.named<Test>("integrationTest") {
+    description = "Runs integration tests"
+    shouldRunAfter("test")
+
+    useJUnitPlatform()
+
+    extensions.configure(JacocoTaskExtension::class) {
+        setDestinationFile(file("${layout.buildDirectory}/jacoco/integrationTest.exec"))
+    }
 }
 
 tasks.withType<Test> {
@@ -150,20 +163,66 @@ fun ignorePackagesInJacocoReport(classDirectories: ConfigurableFileCollection) {
 }
 
 tasks.test {
-	finalizedBy("jacocoReport")
+    useJUnitPlatform()
+
+    description = "Runs unit tests"
+    group = "verification"
+}
+
+tasks.named<Test>("integrationTest") {
+    useJUnitPlatform()
+
+    description = "Runs integration tests"
+    group = "verification"
+
+    shouldRunAfter("test")
+
+    extensions.configure(JacocoTaskExtension::class) {
+        setDestinationFile(file("${layout.buildDirectory}/jacoco/integrationTest.exec"))
+    }
+}
+
+tasks.named<Test>("integrationTest") {
+    useJUnitPlatform()
+
+    description = "Runs integration tests"
+    group = "verification"
+
+    shouldRunAfter("test")
+
+    extensions.configure(JacocoTaskExtension::class) {
+        setDestinationFile(file("${layout.buildDirectory.file("jacoco/integrationTest.exec").get().asFile}"))
+    }
 }
 
 tasks.register<JacocoReport>("jacocoReport") {
-	description = "Generates the HTML documentation for this project"
-	group = JavaBasePlugin.DOCUMENTATION_GROUP
+    description = "Generates JaCoCo report combining unit and integration tests"
+    group = "verification"
 
-	sourceSets(sourceSets.main.get())
-	executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
+    dependsOn("test", "integrationTest") // ensure both run before report
 
-	reports {
-		xml.required.set(true)
-		csv.required.set(false)
-		html.required.set(true)
-	}
-	ignorePackagesInJacocoReport(classDirectories)
+    val testExec = file("${layout.buildDirectory}/jacoco/test.exec")
+    val integrationExec = file("${layout.buildDirectory}/jacoco/integrationTest.exec")
+
+    executionData(testExec, integrationExec)
+    sourceSets(sourceSets["main"])
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+    }
+
+    classDirectories.setFrom(
+        files(
+            classDirectories.files.map {
+                fileTree(it) {
+                    exclude(
+                        "**/polymatus/**/*.java",
+                        "**/polymatus/**/*.kts"
+                    )
+                }
+            }
+        )
+    )
 }
