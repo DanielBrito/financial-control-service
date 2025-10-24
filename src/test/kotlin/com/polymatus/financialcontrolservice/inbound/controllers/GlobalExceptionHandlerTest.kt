@@ -1,5 +1,6 @@
 package com.polymatus.financialcontrolservice.inbound.controllers
 
+import io.kotest.core.annotation.Ignored
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.every
 import io.mockk.mockk
@@ -11,6 +12,9 @@ import org.springframework.validation.BindingResult
 import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
 
+// This is just an example of how to apply unit tests in constraint validations.
+
+@Ignored("Validated through integration tests")
 internal class GlobalExceptionHandlerTest : BehaviorSpec({
     val handler = GlobalExceptionHandler()
     val methodParameter = mockk<MethodParameter>(relaxed = true)

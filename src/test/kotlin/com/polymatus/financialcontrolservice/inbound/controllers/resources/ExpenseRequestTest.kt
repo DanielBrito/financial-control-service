@@ -3,10 +3,12 @@ package com.polymatus.financialcontrolservice.inbound.controllers.resources
 import jakarta.validation.ConstraintViolation
 import jakarta.validation.Validation
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 // This is just an example of how to apply unit tests in constraint validations.
 
+@Disabled("Validated through integration tests")
 internal class ExpenseRequestTest {
 
     private fun validate(expense: ExpenseRequest): Set<ConstraintViolation<ExpenseRequest>> {
