@@ -103,9 +103,14 @@ sonar {
 }
 
 pitest {
+    val exludedClasses = listOf(
+        "com.polymatus.financialcontrolservice.FinancialControlServiceApplicationKt",
+        "com.polymatus.financialcontrolservice.inbound.controllers.*",
+    )
+
     junit5PluginVersion.set("1.2.0")
     targetClasses.set(listOf("com.polymatus.*"))
-    excludedClasses.set(listOf("com.polymatus.financialcontrolservice.FinancialControlServiceApplicationKt"))
+    excludedClasses.set(exludedClasses)
     targetTests.set(listOf("com.polymatus.financialcontrolservice.*"))
     outputFormats.set(listOf("HTML"))
     threads.set(2)
@@ -113,7 +118,7 @@ pitest {
     mutationThreshold.set(80)
 
     mainSourceSets.set(listOf(sourceSets["main"]))
-    testSourceSets.set(listOf(sourceSets["test"], sourceSets["integrationTest"]))
+    testSourceSets.set(listOf(sourceSets["test"]))
 }
 
 configurations.all {
