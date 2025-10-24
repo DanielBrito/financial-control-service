@@ -2,7 +2,6 @@ package com.polymatus.financialcontrolservice.inbound.controllers
 
 import com.polymatus.financialcontrolservice.helpers.FileLoader.readJsonResource
 import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.extensions.spring.SpringExtension
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -14,29 +13,163 @@ import org.springframework.test.web.servlet.post
 
 @SpringBootTest
 @AutoConfigureMockMvc
-internal class ExpenseControllerIntegrationTest : BehaviorSpec() {
+internal class ExpenseControllerIntegrationTest @Autowired constructor(
+    private val mockMvc: MockMvc
+) : BehaviorSpec({
 
-    override fun extensions() = listOf(SpringExtension)
+    given("a valid expense creation payload") {
+        val expenseRequest = readJsonResource("json/requests", "expense_request")
 
-    @Autowired
-    private lateinit var mockMvc: MockMvc
+        `when`("the request is submitted to the endpoint") {
+            val result = mockMvc.post("/expenses") {
+                contentType = APPLICATION_JSON
+                content = expenseRequest
+            }.andReturn()
 
-    init {
-        context("expense creation") {
-            given("a request to create an expense") {
-                val expenseRequest = readJsonResource("json/requests", "expense_request")
+            then("returns status code 201 - created") {
+                assertThat(result.response.status).isEqualTo(HttpStatus.CREATED.value())
+            }
+        }
+    }
 
-                `when`("processing a valid payload") {
-                    val result = mockMvc.post("/expenses") {
-                        contentType = APPLICATION_JSON
-                        content = expenseRequest
-                    }.andReturn()
+    given("a request with an invalid priority field") {
+        val expenseRequest = readJsonResource("json/requests", "expense_request_invalid_priority")
 
-                    then("returns status code 201 - created") {
-                        assertThat(result.response.status).isEqualTo(HttpStatus.CREATED.value())
-                    }
+        `when`("the request is submitted to the endpoint") {
+            val result = mockMvc.post("/expenses") {
+                contentType = APPLICATION_JSON
+                content = expenseRequest
+            }.andReturn().response
+
+            then("returns bad request status") {
+                assertThat(result.status).isEqualTo(HttpStatus.BAD_REQUEST.value())
+            }
+
+            then("returns the appropriate validation error message") {
+                assertThat(result.contentAsString).contains("Priority must be between 1 (min) and 4 (max).")
+            }
+        }
+    }
+
+    given("a request with an invalid name field") {
+        val expenseRequest = readJsonResource("json/requests", "expense_request_invalid_name")
+
+        `when`("the request is submitted to the endpoint") {
+            val result = mockMvc.post("/expenses") {
+                contentType = APPLICATION_JSON
+                content = expenseRequest
+            }.andReturn().response
+
+            then("returns bad request status") {
+                assertThat(result.status).isEqualTo(HttpStatus.BAD_REQUEST.value())
+            }
+
+            then("returns the appropriate validation error message") {
+                assertThat(result.contentAsString).contains("Name is required.")
+            }
+        }
+    }
+
+    given("a request with an invalid category field") {
+        val expenseRequest = readJsonResource("json/requests", "expense_request_invalid_category")
+
+        `when`("the request is submitted to the endpoint") {
+            val result = mockMvc.post("/expenses") {
+                contentType = APPLICATION_JSON
+                content = expenseRequest
+            }.andReturn().response
+
+            then("returns bad request status") {
+                assertThat(result.status).isEqualTo(HttpStatus.BAD_REQUEST.value())
+            }
+
+            then("returns the appropriate validation error message") {
+                assertThat(result.contentAsString).contains("Category is required.")
+            }
+        }
+    }
+
+    given("a request with an invalid price field") {
+        val expenseRequest = readJsonResource("json/requests", "expense_request_invalid_price")
+
+        `when`("the request is submitted to the endpoint") {
+            val result = mockMvc.post("/expenses") {
+                contentType = APPLICATION_JSON
+                content = expenseRequest
+            }.andReturn().response
+
+            then("returns bad request status") {
+                assertThat(result.status).isEqualTo(HttpStatus.BAD_REQUEST.value())
+            }
+
+            then("returns the appropriate validation error message") {
+                assertThat(result.contentAsString).contains("Price must be greater than R$ 0,00.")
+            }
+        }
+    }
+
+    given("a request with an invalid url field") {
+        val expenseRequest = readJsonResource("json/requests", "expense_request_invalid_url")
+
+        `when`("the request is submitted to the endpoint") {
+            val result = mockMvc.post("/expenses") {
+                contentType = APPLICATION_JSON
+                content = expenseRequest
+            }.andReturn().response
+
+            then("returns bad request status") {
+                assertThat(result.status).isEqualTo(HttpStatus.BAD_REQUEST.value())
+            }
+
+            then("returns the appropriate validation error message") {
+                assertThat(result.contentAsString).contains("URL must be valid.")
+            }
+        }
+    }
+
+    given("a request with an invalid group field") {
+        val expenseRequest = readJsonResource("json/requests", "expense_request_invalid_group")
+
+        `when`("the request is submitted to the endpoint") {
+            val result = mockMvc.post("/expenses") {
+                contentType = APPLICATION_JSON
+                content = expenseRequest
+            }.andReturn().response
+
+            then("returns bad request status") {
+                assertThat(result.status).isEqualTo(HttpStatus.BAD_REQUEST.value())
+            }
+
+            then("returns the appropriate validation error message") {
+                assertThat(result.contentAsString).contains("Group is required.")
+            }
+        }
+    }
+
+    given("a request with multiple invalid fields") {
+        val expenseRequest = readJsonResource("json/requests", "expense_request_multiple_invalid_fields")
+
+        `when`("the request is submitted to the endpoint") {
+            val result = mockMvc.post("/expenses") {
+                contentType = APPLICATION_JSON
+                content = expenseRequest
+            }.andReturn().response
+
+            then("returns bad request status") {
+                assertThat(result.status).isEqualTo(HttpStatus.BAD_REQUEST.value())
+            }
+
+            then("returns all appropriate validation error messages") {
+
+                with(result.contentAsString) {
+                    assertThat(this).contains("Name is required.")
+                    assertThat(this).contains("Category is required.")
+                    assertThat(this).contains("Price must be greater than R$ 0,00.")
+                    assertThat(this).contains("Priority must be between 1 (min) and 4 (max).")
+                    assertThat(this).contains("URL must be valid.")
+                    assertThat(this).contains("Group is required.")
                 }
             }
         }
     }
-}
+})
