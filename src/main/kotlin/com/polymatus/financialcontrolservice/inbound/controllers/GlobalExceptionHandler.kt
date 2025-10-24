@@ -1,5 +1,6 @@
 package com.polymatus.financialcontrolservice.inbound.controllers
 
+import com.polymatus.financialcontrolservice.inbound.controllers.resources.InvalidArgumentErrorResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -10,9 +11,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleValidationExceptions(ex: MethodArgumentNotValidException): ResponseEntity<Map<String, String>> {
+    fun handleValidationExceptions(ex: MethodArgumentNotValidException): ResponseEntity<InvalidArgumentErrorResponse> {
         val errors = ex.bindingResult.fieldErrors.associate { it.field to it.defaultMessage.orEmpty() }
-        return ResponseEntity.badRequest().body(errors)
+        return ResponseEntity.badRequest().body(InvalidArgumentErrorResponse(errors))
     }
 
     @ExceptionHandler(HttpMessageNotReadableException::class)

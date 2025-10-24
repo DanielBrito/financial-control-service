@@ -1,6 +1,8 @@
 package com.polymatus.financialcontrolservice.inbound.controllers
 
+import com.polymatus.financialcontrolservice.helpers.CustomObjectMapper
 import com.polymatus.financialcontrolservice.helpers.FileLoader.readJsonResource
+import com.polymatus.financialcontrolservice.inbound.controllers.resources.InvalidArgumentErrorResponse
 import io.kotest.core.spec.style.BehaviorSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.beans.factory.annotation.Autowired
@@ -8,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 
@@ -16,6 +19,10 @@ import org.springframework.test.web.servlet.post
 internal class ExpenseControllerIntegrationTest @Autowired constructor(
     private val mockMvc: MockMvc
 ) : BehaviorSpec({
+
+    fun MockHttpServletResponse.toInvalidArgumentErrorResponse(): InvalidArgumentErrorResponse {
+        return CustomObjectMapper.get().readValue(this.contentAsString, InvalidArgumentErrorResponse::class.java)
+    }
 
     given("a valid expense creation payload") {
         val expenseRequest = readJsonResource("json/requests", "expense_request")
@@ -160,15 +167,14 @@ internal class ExpenseControllerIntegrationTest @Autowired constructor(
             }
 
             then("returns all appropriate validation error messages") {
+                val (errors) = result.toInvalidArgumentErrorResponse()
 
-                with(result.contentAsString) {
-                    assertThat(this).contains("Name is required.")
-                    assertThat(this).contains("Category is required.")
-                    assertThat(this).contains("Price must be greater than R$ 0,00.")
-                    assertThat(this).contains("Priority must be between 1 (min) and 4 (max).")
-                    assertThat(this).contains("URL must be valid.")
-                    assertThat(this).contains("Group is required.")
-                }
+                assertThat(errors).containsEntry("name", "Name is required.")
+                assertThat(errors).containsEntry("category", "Category is required.")
+                assertThat(errors).containsEntry("price", "Price must be greater than R$ 0,00.")
+                assertThat(errors).containsEntry("priority", "Priority must be between 1 (min) and 4 (max).")
+                assertThat(errors).containsEntry("url", "URL must be valid.")
+                assertThat(errors).containsEntry("group", "Group is required.")
             }
         }
     }

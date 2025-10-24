@@ -33,7 +33,7 @@ internal class GlobalExceptionHandlerTest : BehaviorSpec({
             }
 
             then("returns mapped response with the correct field and error message") {
-                assertThat(response.body).isEqualTo(mapOf("fieldName" to "default message"))
+                assertThat(response.body?.errors).isEqualTo(mapOf("fieldName" to "default message"))
             }
         }
 
@@ -51,7 +51,7 @@ internal class GlobalExceptionHandlerTest : BehaviorSpec({
             }
 
             then("returns mapped response with all fields and their error messages") {
-                assertThat(response.body).isEqualTo(
+                assertThat(response.body?.errors).isEqualTo(
                     mapOf(
                         "field1" to "error message 1",
                         "field2" to "error message 2"
