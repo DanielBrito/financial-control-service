@@ -103,15 +103,17 @@ sonar {
 }
 
 pitest {
-	setProperty("junit5PluginVersion", "1.2.0")
-	setProperty("targetClasses", listOf("com.polymatus.*"))
-	setProperty("excludedClasses", listOf("com.polymatus.financialcontrolservice.FinancialControlServiceApplicationKt"))
-	setProperty("targetTests", listOf("com.polymatus.financialcontrolservice.*"))
-	setProperty("outputFormats", listOf("HTML"))
-	setProperty("threads", 2)
-	setProperty("jvmArgs", listOf("-Xmx2G"))
-	setProperty("withHistory", false)
-	setProperty("mutationThreshold", 80)
+    junit5PluginVersion.set("1.2.0")
+    targetClasses.set(listOf("com.polymatus.*"))
+    excludedClasses.set(listOf("com.polymatus.financialcontrolservice.FinancialControlServiceApplicationKt"))
+    targetTests.set(listOf("com.polymatus.financialcontrolservice.*"))
+    outputFormats.set(listOf("HTML"))
+    threads.set(2)
+    jvmArgs.set(listOf("-Xmx2G"))
+    mutationThreshold.set(80)
+
+    mainSourceSets.set(listOf(sourceSets["main"]))
+    testSourceSets.set(listOf(sourceSets["test"], sourceSets["integrationTest"]))
 }
 
 configurations.all {
