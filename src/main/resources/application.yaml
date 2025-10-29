@@ -11,6 +11,11 @@ spring:
   flyway:
     enabled: false
 
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
 management:
   endpoints:
     web:
