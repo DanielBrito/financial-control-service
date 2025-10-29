@@ -62,6 +62,13 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
           cache: 'gradle'
+      - name: Wait for Postgres
+        run: |
+          echo "Waiting for Postgres..."
+          until pg_isready -h localhost -p 5432 -U postgres; do
+            sleep 1
+          done
+          echo "Postgres is ready!"
       - name: Run integration tests
         run: ./gradlew integrationTest -i
 
