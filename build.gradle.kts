@@ -134,6 +134,11 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
+tasks.named<Test>("integrationTest") {
+    useJUnitPlatform()
+    systemProperty("spring.profiles.active", "test")
+}
+
 fun ignorePackagesInJacocoReport(classDirectories: ConfigurableFileCollection) {
 	classDirectories.setFrom(
 		files(
