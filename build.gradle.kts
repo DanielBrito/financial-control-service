@@ -83,9 +83,7 @@ detekt {
 }
 
 testSets {
-    create("integrationTest") {
-        dirName = "integrationTest"
-    }
+    "integrationTest"()
 }
 
 sonar {
@@ -132,8 +130,6 @@ configurations.all {
 	}
 }
 
-
-
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
@@ -145,7 +141,8 @@ fun ignorePackagesInJacocoReport(classDirectories: ConfigurableFileCollection) {
 				fileTree(it).apply {
 					exclude(
 						"**/polymatus/**/*.java",
-						"**/polymatus/**/*.kts"
+						"**/polymatus/**/*.kts",
+                        "**/polymatus/**/FinancialControlServiceApplication*",
 					)
 				}
 			}
@@ -154,53 +151,21 @@ fun ignorePackagesInJacocoReport(classDirectories: ConfigurableFileCollection) {
 }
 
 tasks.test {
-    useJUnitPlatform()
-
-    description = "Runs unit tests"
-    group = "verification"
-}
-
-tasks.named<Test>("integrationTest") {
-    useJUnitPlatform()
-
-    description = "Runs integration tests"
-    group = "verification"
-
-    shouldRunAfter("test")
-
-    extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("${layout.buildDirectory.file("jacoco/integrationTest.exec").get().asFile}"))
-    }
+    finalizedBy("jacocoReport")
 }
 
 tasks.register<JacocoReport>("jacocoReport") {
-    description = "Generates JaCoCo report combining unit and integration tests"
-    group = "verification"
+    description = "Generates the HTML documentation for this project"
+    group = JavaBasePlugin.DOCUMENTATION_GROUP
 
-    dependsOn("test", "integrationTest") // ensure both run before report
-
-    val testExec = file("${layout.buildDirectory}/jacoco/test.exec")
-    val integrationExec = file("${layout.buildDirectory}/jacoco/integrationTest.exec")
-
-    executionData(testExec, integrationExec)
-    sourceSets(sourceSets["main"])
+    sourceSets(sourceSets.main.get())
+    executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
 
     reports {
         xml.required.set(true)
-        html.required.set(true)
         csv.required.set(false)
+        html.required.set(true)
     }
 
-    classDirectories.setFrom(
-        files(
-            classDirectories.files.map {
-                fileTree(it) {
-                    exclude(
-                        "**/polymatus/**/*.java",
-                        "**/polymatus/**/*.kts"
-                    )
-                }
-            }
-        )
-    )
+    ignorePackagesInJacocoReport(classDirectories)
 }
