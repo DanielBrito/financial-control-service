@@ -64,12 +64,6 @@ jobs:
           cache: 'gradle'
       - name: Run integration tests
         run: ./gradlew integrationTest -i
-        env:
-          DB_HOST: localhost
-          DB_PORT: 5432
-          DB_NAME: financial_control_service_test
-          DB_USER: postgres
-          DB_PASSWORD: postgres
 
   mutation-test:
     runs-on: ubuntu-latest
