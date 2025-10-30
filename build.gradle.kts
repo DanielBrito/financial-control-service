@@ -72,6 +72,18 @@ kotlin {
 detekt {
 	toolVersion = detektVersion
 	autoCorrect = true
+
+    source.setFrom(
+        files(
+            "src/main/kotlin",
+            "src/test/kotlin",
+            "src/integrationTest/kotlin"
+        )
+    )
+}
+
+testSets {
+    "integrationTest"()
 }
 
 sonar {
@@ -91,15 +103,23 @@ sonar {
 }
 
 pitest {
-	setProperty("junit5PluginVersion", "1.2.0")
-	setProperty("targetClasses", listOf("com.polymatus.*"))
-	setProperty("excludedClasses", listOf("com.polymatus.financialcontrolservice.FinancialControlServiceApplicationKt"))
-	setProperty("targetTests", listOf("com.polymatus.financialcontrolservice.*"))
-	setProperty("outputFormats", listOf("HTML"))
-	setProperty("threads", 2)
-	setProperty("jvmArgs", listOf("-Xmx2G"))
-	setProperty("withHistory", false)
-	setProperty("mutationThreshold", 80)
+    val skippedClasses = listOf(
+        "com.polymatus.financialcontrolservice.FinancialControlServiceApplicationKt",
+        "com.polymatus.financialcontrolservice.controllers.*",
+    )
+
+    junit5PluginVersion.set("1.2.0")
+    targetClasses.set(listOf("com.polymatus.*"))
+    excludedClasses.set(skippedClasses)
+    targetTests.set(listOf("com.polymatus.financialcontrolservice.*"))
+    outputFormats.set(listOf("HTML"))
+    threads.set(2)
+    jvmArgs.set(listOf("-Xmx2G"))
+    mutationThreshold.set(80)
+    failWhenNoMutations.set(false)
+
+    mainSourceSets.set(listOf(sourceSets["main"]))
+    testSourceSets.set(listOf(sourceSets["test"]))
 }
 
 configurations.all {
@@ -114,6 +134,11 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
+tasks.named<Test>("integrationTest") {
+    useJUnitPlatform()
+    systemProperty("spring.profiles.active", "test")
+}
+
 fun ignorePackagesInJacocoReport(classDirectories: ConfigurableFileCollection) {
 	classDirectories.setFrom(
 		files(
@@ -121,7 +146,8 @@ fun ignorePackagesInJacocoReport(classDirectories: ConfigurableFileCollection) {
 				fileTree(it).apply {
 					exclude(
 						"**/polymatus/**/*.java",
-						"**/polymatus/**/*.kts"
+						"**/polymatus/**/*.kts",
+                        "**/polymatus/**/FinancialControlServiceApplication*",
 					)
 				}
 			}
@@ -130,20 +156,21 @@ fun ignorePackagesInJacocoReport(classDirectories: ConfigurableFileCollection) {
 }
 
 tasks.test {
-	finalizedBy("jacocoReport")
+    finalizedBy("jacocoReport")
 }
 
 tasks.register<JacocoReport>("jacocoReport") {
-	description = "Generates the HTML documentation for this project"
-	group = JavaBasePlugin.DOCUMENTATION_GROUP
+    description = "Generates the HTML documentation for this project"
+    group = JavaBasePlugin.DOCUMENTATION_GROUP
 
-	sourceSets(sourceSets.main.get())
-	executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
+    sourceSets(sourceSets.main.get())
+    executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
 
-	reports {
-		xml.required.set(true)
-		csv.required.set(false)
-		html.required.set(true)
-	}
-	ignorePackagesInJacocoReport(classDirectories)
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.required.set(true)
+    }
+
+    ignorePackagesInJacocoReport(classDirectories)
 }

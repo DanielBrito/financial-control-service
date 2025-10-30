@@ -1,0 +1,7 @@
+spring:
+  main:
+    web-application-type: NONE
+    lazy-initialization: true
+
+  flyway:
+    enabled: true

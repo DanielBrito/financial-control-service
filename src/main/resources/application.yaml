@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: financial-control-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/financial_control_service
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  flyway:
+    enabled: false
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, metrics
+
+logging:
+  level:
+    root: DEBUG
