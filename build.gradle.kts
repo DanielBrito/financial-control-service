@@ -6,7 +6,7 @@ plugins {
 	id("org.springframework.boot") version "3.4.2"
 	id("io.spring.dependency-management") version "1.1.7"
 
-	id("info.solidsoft.pitest") version "1.15.0"
+	id("info.solidsoft.pitest") version "1.19.0-rc.2"
 	id("org.unbroken-dome.test-sets") version "4.1.0"
 	id("io.gitlab.arturbosch.detekt") version "1.23.7"
 	id("jacoco")
