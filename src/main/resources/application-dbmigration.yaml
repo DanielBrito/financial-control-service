@@ -5,7 +5,3 @@ spring:
 
   flyway:
     enabled: true
-
-app:
-  events:
-    auto-startup: false

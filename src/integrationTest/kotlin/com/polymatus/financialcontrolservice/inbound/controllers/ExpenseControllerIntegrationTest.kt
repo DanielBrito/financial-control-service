@@ -1,8 +1,8 @@
 package com.polymatus.financialcontrolservice.inbound.controllers
 
+import com.polymatus.financialcontrolservice.controllers.resources.InvalidArgumentErrorResponse
 import com.polymatus.financialcontrolservice.helpers.CustomObjectMapper
 import com.polymatus.financialcontrolservice.helpers.FileLoader.readJsonResource
-import com.polymatus.financialcontrolservice.inbound.controllers.resources.InvalidArgumentErrorResponse
 import io.kotest.core.spec.style.BehaviorSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.beans.factory.annotation.Autowired

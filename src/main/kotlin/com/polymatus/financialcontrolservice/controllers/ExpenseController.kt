@@ -1,6 +1,6 @@
-package com.polymatus.financialcontrolservice.inbound.controllers
+package com.polymatus.financialcontrolservice.controllers
 
-import com.polymatus.financialcontrolservice.inbound.controllers.resources.ExpenseRequest
+import com.polymatus.financialcontrolservice.controllers.resources.ExpenseRequest
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

@@ -1,6 +1,6 @@
-package com.polymatus.financialcontrolservice.inbound.controllers
+package com.polymatus.financialcontrolservice.controllers
 
-import com.polymatus.financialcontrolservice.inbound.controllers.resources.InvalidArgumentErrorResponse
+import com.polymatus.financialcontrolservice.controllers.resources.InvalidArgumentErrorResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException

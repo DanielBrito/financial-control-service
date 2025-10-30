@@ -1,4 +1,4 @@
-package com.polymatus.financialcontrolservice.inbound.controllers.resources
+package com.polymatus.financialcontrolservice.controllers.resources
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Positive

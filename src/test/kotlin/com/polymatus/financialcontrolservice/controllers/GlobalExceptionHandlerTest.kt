@@ -1,4 +1,4 @@
-package com.polymatus.financialcontrolservice.inbound.controllers
+package com.polymatus.financialcontrolservice.controllers
 
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.every

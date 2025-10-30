@@ -22,6 +22,6 @@ management:
       exposure:
         include: info, health, metrics
 
-# logging:
-#   level:
-#     root: DEBUG
+logging:
+  level:
+    root: DEBUG

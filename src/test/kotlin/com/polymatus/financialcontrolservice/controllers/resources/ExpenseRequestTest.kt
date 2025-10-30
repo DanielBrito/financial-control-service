@@ -1,4 +1,4 @@
-package com.polymatus.financialcontrolservice.inbound.controllers.resources
+package com.polymatus.financialcontrolservice.controllers.resources
 
 import io.kotest.core.spec.style.BehaviorSpec
 import jakarta.validation.ConstraintViolation
