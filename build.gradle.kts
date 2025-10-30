@@ -105,7 +105,7 @@ sonar {
 pitest {
     val skippedClasses = listOf(
         "com.polymatus.financialcontrolservice.FinancialControlServiceApplicationKt",
-        "com.polymatus.financialcontrolservice.inbound.controllers.*",
+        "com.polymatus.financialcontrolservice.controllers.*",
     )
 
     junit5PluginVersion.set("1.2.0")
