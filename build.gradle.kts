@@ -103,15 +103,17 @@ sonar {
 }
 
 pitest {
-    val skippedClasses = listOf(
+    val classesToSkip = listOf(
         "com.polymatus.financialcontrolservice.FinancialControlServiceApplicationKt",
-        "com.polymatus.financialcontrolservice.controllers.*",
+        "com.polymatus.financialcontrolservice.infrastructure.repositories.entities.*",
+        "com.polymatus.financialcontrolservice.application.web.controllers.handlers.*",
     )
 
     junit5PluginVersion.set("1.2.0")
     targetClasses.set(listOf("com.polymatus.*"))
-    excludedClasses.set(skippedClasses)
+    excludedClasses.set(classesToSkip)
     targetTests.set(listOf("com.polymatus.financialcontrolservice.*"))
+    excludedMethods.set(listOf("get*"))
     outputFormats.set(listOf("HTML"))
     threads.set(2)
     jvmArgs.set(listOf("-Xmx2G"))

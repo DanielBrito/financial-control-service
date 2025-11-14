@@ -7,6 +7,7 @@ import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpStatus
 
@@ -17,12 +18,16 @@ internal class ExpenseControllerTest : BehaviorSpec({
         val subject = ExpenseController(createExpenseUseCase)
 
         `when`("a request to create an expense is made") {
-            val expenseRequest = ExpenseRequestBuilder.build()
+            val expenseRequest = ExpenseRequestBuilder().build()
             val createExpenseInput = expenseRequest.toInput()
 
             every { createExpenseUseCase.process(createExpenseInput) } just Runs
 
             val result = subject.create(expenseRequest)
+
+            then("it should call the use case with correct input") {
+                verify(exactly = 1) { createExpenseUseCase.process(createExpenseInput) }
+            }
 
             then("it should return created status code") {
                 assertThat(result.statusCode).isEqualTo(HttpStatus.CREATED)

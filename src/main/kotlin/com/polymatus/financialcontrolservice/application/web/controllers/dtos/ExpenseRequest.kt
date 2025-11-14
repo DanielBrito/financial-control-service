@@ -35,14 +35,14 @@ data class ExpenseRequest(
 ) {
 
     fun toInput() = ExpenseCreationInput(
-        priority = Priority.valueOf(priority),
+        priority = Priority.from(priority),
         name = name,
-        category = Category.valueOf(category),
+        category = Category.from(category),
         price = price,
         description = description,
         place = place,
         url = url,
         comment = comment,
-        grouping = Grouping.valueOf(grouping)
+        grouping = Grouping.from(grouping)
     )
 }

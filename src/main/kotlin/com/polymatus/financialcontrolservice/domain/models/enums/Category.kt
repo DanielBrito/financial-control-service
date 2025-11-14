@@ -1,5 +1,7 @@
 package com.polymatus.financialcontrolservice.domain.models.enums
 
+import com.polymatus.financialcontrolservice.domain.exceptions.InvalidCategoryException
+
 enum class Category {
     APP,
     CLEANING,
@@ -22,5 +24,11 @@ enum class Category {
     TOOL,
     TRANSPORTATION,
     TRAVEL,
-    VARIETIES
+    VARIETIES;
+
+    companion object {
+        fun from(value: String): Category =
+            entries.firstOrNull { it.name.equals(value, ignoreCase = true) }
+                ?: throw InvalidCategoryException(value)
+    }
 }

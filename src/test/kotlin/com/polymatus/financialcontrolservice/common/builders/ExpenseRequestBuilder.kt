@@ -2,7 +2,7 @@ package com.polymatus.financialcontrolservice.common.builders
 
 import com.polymatus.financialcontrolservice.application.web.controllers.dtos.ExpenseRequest
 
-object ExpenseRequestBuilder {
+class ExpenseRequestBuilder {
     var priority: String = "MEDIUM"
     var name: String = "Laptop"
     var category: String = "ELECTRONIC"

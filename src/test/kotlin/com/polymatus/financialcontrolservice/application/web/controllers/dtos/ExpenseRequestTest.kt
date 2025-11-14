@@ -1,6 +1,9 @@
 package com.polymatus.financialcontrolservice.application.web.controllers.dtos
 
 import com.polymatus.financialcontrolservice.common.builders.ExpenseRequestBuilder
+import com.polymatus.financialcontrolservice.domain.exceptions.InvalidCategoryException
+import com.polymatus.financialcontrolservice.domain.exceptions.InvalidGroupingException
+import com.polymatus.financialcontrolservice.domain.exceptions.InvalidPriorityException
 import io.kotest.core.spec.style.BehaviorSpec
 import jakarta.validation.ConstraintViolation
 import jakarta.validation.Validation
@@ -12,10 +15,10 @@ internal class ExpenseRequestTest : BehaviorSpec({
         return Validation.buildDefaultValidatorFactory().validator.validate(expense)
     }
 
-    given("an expense request") {
+    given("an expense request building") {
 
-        `when`("it is valid") {
-            val validExpense = ExpenseRequestBuilder.build()
+        `when`("the content is valid") {
+            val validExpense = ExpenseRequestBuilder().build()
 
             val violations = validate(validExpense)
 
@@ -24,44 +27,24 @@ internal class ExpenseRequestTest : BehaviorSpec({
             }
         }
 
-        `when`("the priority is out of range") {
-            listOf(0, 5).forEach { invalidPriority ->
-                val expense = ExpenseRequest(
-                    priority = "RANDOM",
-                    name = "Laptop",
-                    category = "ELECTRONIC",
-                    price = 25.0,
-                    description = null,
-                    place = null,
-                    url = null,
-                    comment = null,
-                    grouping = "GENERAL"
-                )
+        `when`("the priority is blank") {
+            val expense = ExpenseRequestBuilder().apply {
+                priority = ""
+            }.build()
 
-                val violations = validate(expense)
+            val violations = validate(expense)
 
-                then("it triggers the priority validation error for invalid priority $invalidPriority") {
-                    assertThat(violations)
-                        .anySatisfy { violation ->
-                            assertThat(violation.message)
-                                .isEqualTo("Priority must be between 1 (min) and 4 (max).")
-                        }
-                }
+            then("it triggers the priority validation error") {
+                assertThat(violations)
+                    .anySatisfy { violation ->
+                        assertThat(violation.message)
+                            .isEqualTo("Priority is required.")
+                    }
             }
         }
 
         `when`("the name is blank") {
-            val expense = ExpenseRequest(
-                priority = "MEDIUM",
-                name = "",
-                category = "ELECTRONIC",
-                price = 25.0,
-                description = null,
-                place = null,
-                url = null,
-                comment = null,
-                grouping = "GENERAL"
-            )
+            val expense = ExpenseRequestBuilder().apply { name = "" }.build()
 
             val violations = validate(expense)
 
@@ -75,17 +58,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
         }
 
         `when`("the category is blank") {
-            val expense = ExpenseRequest(
-                priority = "MEDIUM",
-                name = "Laptop",
-                category = "",
-                price = 25.0,
-                description = null,
-                place = null,
-                url = null,
-                comment = null,
-                grouping = "GENERAL"
-            )
+            val expense = ExpenseRequestBuilder().apply { category = "" }.build()
 
             val violations = validate(expense)
 
@@ -100,17 +73,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
 
         `when`("the price is negative or zero") {
             listOf(-123.0, 0.0).forEach { invalidPrice ->
-                val expense = ExpenseRequest(
-                    priority = "MEDIUM",
-                    name = "Laptop",
-                    category = "ELECTRONIC",
-                    price = invalidPrice,
-                    description = null,
-                    place = null,
-                    url = null,
-                    comment = null,
-                    grouping = "GENERAL"
-                )
+                val expense = ExpenseRequestBuilder().apply { price = invalidPrice }.build()
 
                 val violations = validate(expense)
 
@@ -124,18 +87,8 @@ internal class ExpenseRequestTest : BehaviorSpec({
             }
         }
 
-        `when`("the URL is invalid") {
-            val expense = ExpenseRequest(
-                priority = "MEDIUM",
-                name = "Laptop",
-                category = "ELECTRONIC",
-                price = 25.0,
-                description = null,
-                place = null,
-                url = "htp://amazon",
-                comment = null,
-                grouping = "GENERAL"
-            )
+        `when`("the url is invalid") {
+            val expense = ExpenseRequestBuilder().apply { url = "htp://amazon" }.build()
 
             val violations = validate(expense)
 
@@ -149,17 +102,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
         }
 
         `when`("the group is blank") {
-            val expense = ExpenseRequest(
-                priority = "MEDIUM",
-                name = "Laptop",
-                category = "ELECTRONIC",
-                price = 25.0,
-                description = null,
-                place = null,
-                url = null,
-                comment = null,
-                grouping = ""
-            )
+            val expense = ExpenseRequestBuilder().apply { grouping = "" }.build()
 
             val violations = validate(expense)
 
@@ -169,6 +112,67 @@ internal class ExpenseRequestTest : BehaviorSpec({
                         assertThat(violation.message)
                             .isEqualTo("Grouping is required.")
                     }
+            }
+        }
+    }
+
+    given("an expense request parsing") {
+        `when`("the content is valid") {
+            val expenseRequest = ExpenseRequestBuilder().build()
+            val input = expenseRequest.toInput()
+
+            then("it returns the expense creation input") {
+                assertThat(input.priority.name).isEqualTo(expenseRequest.priority)
+                assertThat(input.name).isEqualTo(expenseRequest.name)
+                assertThat(input.category.name).isEqualTo(expenseRequest.category)
+                assertThat(input.price).isEqualTo(expenseRequest.price)
+                assertThat(input.description).isEqualTo(expenseRequest.description)
+                assertThat(input.place).isEqualTo(expenseRequest.place)
+                assertThat(input.url).isEqualTo(expenseRequest.url)
+                assertThat(input.comment).isEqualTo(expenseRequest.comment)
+                assertThat(input.grouping.name).isEqualTo(expenseRequest.grouping)
+            }
+        }
+
+        `when`("the priority is invalid") {
+            val expenseRequest = ExpenseRequestBuilder().apply {
+                priority = "INVALID_PRIORITY"
+            }.build()
+
+            val result = runCatching { expenseRequest.toInput() }
+
+            then("it should throw invalid priority exception with proper message") {
+                assertThat(result.exceptionOrNull())
+                    .isInstanceOf(InvalidPriorityException::class.java)
+                    .hasMessage("Invalid priority value: 'INVALID_PRIORITY'.")
+            }
+        }
+
+        `when`("the category is invalid") {
+            val expenseRequest = ExpenseRequestBuilder().apply {
+                category = "INVALID_CATEGORY"
+            }.build()
+
+            val result = runCatching { expenseRequest.toInput() }
+
+            then("it should throw illegal argument exception") {
+                assertThat(result.exceptionOrNull())
+                    .isInstanceOf(InvalidCategoryException::class.java)
+                    .hasMessage("Invalid category value: 'INVALID_CATEGORY'.")
+            }
+        }
+
+        `when`("the grouping is invalid") {
+            val expenseRequest = ExpenseRequestBuilder().apply {
+                grouping = "INVALID_GROUPING"
+            }.build()
+
+            val result = runCatching { expenseRequest.toInput() }
+
+            then("it should throw illegal argument exception") {
+                assertThat(result.exceptionOrNull())
+                    .isInstanceOf(InvalidGroupingException::class.java)
+                    .hasMessage("Invalid grouping value: 'INVALID_GROUPING'.")
             }
         }
     }
