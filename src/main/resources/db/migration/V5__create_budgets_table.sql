@@ -2,7 +2,7 @@ CREATE TABLE budgets(
     id          UUID          PRIMARY KEY,
     expense_id  UUID          NOT NULL,
     place       VARCHAR(255)  NOT NULL,
-    price       DECIMAL(10,2) NOT NULL,
+    price       DECIMAL       NOT NULL,
     url         VARCHAR,
     description VARCHAR(255),
     preference  INTEGER,

@@ -31,7 +31,7 @@ data class ExpenseEntity(
     @Column(name = "category", nullable = false, length = 50)
     val category: Category,
 
-    @Column(name = "price", nullable = false, scale = 10, precision = 2)
+    @Column(name = "price", nullable = false)
     val price: Double,
 
     @Column(name = "description")

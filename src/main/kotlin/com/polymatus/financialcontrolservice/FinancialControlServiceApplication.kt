@@ -7,11 +7,5 @@ import org.springframework.boot.runApplication
 class FinancialControlServiceApplication
 
 fun main(args: Array<String>) {
-    runApplication<FinancialControlServiceApplication> {
-        if (args.isNotEmpty()) {
-            when (args[0]) {
-                "migrate" -> this.setAdditionalProfiles("dbmigration")
-            }
-        }
-    }
+    runApplication<FinancialControlServiceApplication>{}
 }
