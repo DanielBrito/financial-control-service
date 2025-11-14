@@ -29,7 +29,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
                 val expense = ExpenseRequest(
                     priority = "RANDOM",
                     name = "Laptop",
-                    category = "ELECTRONICS",
+                    category = "ELECTRONIC",
                     price = 25.0,
                     description = null,
                     place = null,
@@ -54,7 +54,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
             val expense = ExpenseRequest(
                 priority = "MEDIUM",
                 name = "",
-                category = "ELECTRONICS",
+                category = "ELECTRONIC",
                 price = 25.0,
                 description = null,
                 place = null,
@@ -103,7 +103,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
                 val expense = ExpenseRequest(
                     priority = "MEDIUM",
                     name = "Laptop",
-                    category = "ELECTRONICS",
+                    category = "ELECTRONIC",
                     price = invalidPrice,
                     description = null,
                     place = null,
@@ -128,7 +128,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
             val expense = ExpenseRequest(
                 priority = "MEDIUM",
                 name = "Laptop",
-                category = "ELECTRONICS",
+                category = "ELECTRONIC",
                 price = 25.0,
                 description = null,
                 place = null,
@@ -152,7 +152,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
             val expense = ExpenseRequest(
                 priority = "MEDIUM",
                 name = "Laptop",
-                category = "ELECTRONICS",
+                category = "ELECTRONIC",
                 price = 25.0,
                 description = null,
                 place = null,
@@ -167,7 +167,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
                 assertThat(violations)
                     .anySatisfy { violation ->
                         assertThat(violation.message)
-                            .isEqualTo("Group is required.")
+                            .isEqualTo("Grouping is required.")
                     }
             }
         }
