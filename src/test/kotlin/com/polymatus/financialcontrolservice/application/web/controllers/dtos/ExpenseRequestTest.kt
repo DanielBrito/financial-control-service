@@ -1,9 +1,6 @@
 package com.polymatus.financialcontrolservice.application.web.controllers.dtos
 
 import com.polymatus.financialcontrolservice.common.builders.ExpenseRequestBuilder
-import com.polymatus.financialcontrolservice.domain.exceptions.InvalidCategoryException
-import com.polymatus.financialcontrolservice.domain.exceptions.InvalidGroupingException
-import com.polymatus.financialcontrolservice.domain.exceptions.InvalidPriorityException
 import io.kotest.core.spec.style.BehaviorSpec
 import jakarta.validation.ConstraintViolation
 import jakarta.validation.Validation
@@ -23,7 +20,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
 
             val violations = validate(validExpense)
 
-            then("it passes validation") {
+            then("it should passe validation") {
                 assertThat(violations).isEmpty()
             }
         }
@@ -35,7 +32,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
 
             val violations = validate(expense)
 
-            then("it triggers the priority validation error") {
+            then("it should trigger the priority validation error") {
                 assertThat(violations)
                     .anySatisfy { violation ->
                         assertThat(violation.message)
@@ -49,7 +46,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
 
             val violations = validate(expense)
 
-            then("it triggers the name validation error") {
+            then("it should trigger the name validation error") {
                 assertThat(violations)
                     .anySatisfy { violation ->
                         assertThat(violation.message)
@@ -63,7 +60,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
 
             val violations = validate(expense)
 
-            then("it triggers the category validation error") {
+            then("it should trigger the category validation error") {
                 assertThat(violations)
                     .anySatisfy { violation ->
                         assertThat(violation.message)
@@ -81,7 +78,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
 
                 val violations = validate(expense)
 
-                then("it triggers the price validation error for invalid price $invalidPrice") {
+                then("it should trigger the price validation error for invalid price $invalidPrice") {
                     assertThat(violations)
                         .anySatisfy { violation ->
                             assertThat(violation.message)
@@ -96,7 +93,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
 
             val violations = validate(expense)
 
-            then("it triggers the URL validation error") {
+            then("it should trigger the URL validation error") {
                 assertThat(violations)
                     .anySatisfy { violation ->
                         assertThat(violation.message)
@@ -105,78 +102,17 @@ internal class ExpenseRequestTest : BehaviorSpec({
             }
         }
 
-        `when`("the group is blank") {
+        `when`("the grouping is blank") {
             val expense = ExpenseRequestBuilder().apply { grouping = "" }.build()
 
             val violations = validate(expense)
 
-            then("it triggers the group validation error") {
+            then("it should trigger the grouping validation error") {
                 assertThat(violations)
                     .anySatisfy { violation ->
                         assertThat(violation.message)
                             .isEqualTo("Grouping is required.")
                     }
-            }
-        }
-    }
-
-    given("an expense request parsing") {
-        `when`("the content is valid") {
-            val expenseRequest = ExpenseRequestBuilder().build()
-            val input = expenseRequest.toInput()
-
-            then("it returns the expense creation input") {
-                assertThat(input.priority.name).isEqualTo(expenseRequest.priority)
-                assertThat(input.name).isEqualTo(expenseRequest.name)
-                assertThat(input.category.name).isEqualTo(expenseRequest.category)
-                assertThat(input.price).isEqualTo(expenseRequest.price)
-                assertThat(input.description).isEqualTo(expenseRequest.description)
-                assertThat(input.place).isEqualTo(expenseRequest.place)
-                assertThat(input.url).isEqualTo(expenseRequest.url)
-                assertThat(input.comment).isEqualTo(expenseRequest.comment)
-                assertThat(input.grouping.name).isEqualTo(expenseRequest.grouping)
-            }
-        }
-
-        `when`("the priority is invalid") {
-            val expenseRequest = ExpenseRequestBuilder().apply {
-                priority = "INVALID_PRIORITY"
-            }.build()
-
-            val result = runCatching { expenseRequest.toInput() }
-
-            then("it should throw invalid priority exception with proper message") {
-                assertThat(result.exceptionOrNull())
-                    .isInstanceOf(InvalidPriorityException::class.java)
-                    .hasMessage("Invalid priority value: 'INVALID_PRIORITY'.")
-            }
-        }
-
-        `when`("the category is invalid") {
-            val expenseRequest = ExpenseRequestBuilder().apply {
-                category = "INVALID_CATEGORY"
-            }.build()
-
-            val result = runCatching { expenseRequest.toInput() }
-
-            then("it should throw illegal argument exception") {
-                assertThat(result.exceptionOrNull())
-                    .isInstanceOf(InvalidCategoryException::class.java)
-                    .hasMessage("Invalid category value: 'INVALID_CATEGORY'.")
-            }
-        }
-
-        `when`("the grouping is invalid") {
-            val expenseRequest = ExpenseRequestBuilder().apply {
-                grouping = "INVALID_GROUPING"
-            }.build()
-
-            val result = runCatching { expenseRequest.toInput() }
-
-            then("it should throw illegal argument exception") {
-                assertThat(result.exceptionOrNull())
-                    .isInstanceOf(InvalidGroupingException::class.java)
-                    .hasMessage("Invalid grouping value: 'INVALID_GROUPING'.")
             }
         }
     }

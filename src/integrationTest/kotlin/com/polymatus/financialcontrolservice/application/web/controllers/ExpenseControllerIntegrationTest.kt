@@ -15,7 +15,6 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 
-// TODO: Integration tests not pointing to test database
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")

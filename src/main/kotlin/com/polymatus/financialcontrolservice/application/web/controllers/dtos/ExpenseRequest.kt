@@ -35,7 +35,6 @@ data class ExpenseRequest(
     val grouping: String
 ) {
 
-    // TODO: Move enum parsing tests to proper class
     fun toInput() = ExpenseCreationInput(
         priority = Priority.from(priority),
         name = name,
