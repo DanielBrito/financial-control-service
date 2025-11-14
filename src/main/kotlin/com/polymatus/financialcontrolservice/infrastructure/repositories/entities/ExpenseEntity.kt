@@ -13,6 +13,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
+import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -31,8 +32,8 @@ data class ExpenseEntity(
     @Column(name = "category", nullable = false, length = 50)
     val category: Category,
 
-    @Column(name = "price", nullable = false)
-    val price: Double,
+    @Column(name = "price", nullable = false, precision = 10, scale = 2)
+    val price: BigDecimal,
 
     @Column(name = "description")
     val description: String?,

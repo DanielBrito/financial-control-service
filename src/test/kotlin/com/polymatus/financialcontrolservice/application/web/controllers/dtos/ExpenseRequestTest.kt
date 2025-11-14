@@ -8,6 +8,7 @@ import io.kotest.core.spec.style.BehaviorSpec
 import jakarta.validation.ConstraintViolation
 import jakarta.validation.Validation
 import org.assertj.core.api.Assertions.assertThat
+import java.math.BigDecimal
 
 internal class ExpenseRequestTest : BehaviorSpec({
 
@@ -72,7 +73,10 @@ internal class ExpenseRequestTest : BehaviorSpec({
         }
 
         `when`("the price is negative or zero") {
-            listOf(-123.0, 0.0).forEach { invalidPrice ->
+            val negativePrice = BigDecimal(-123.0)
+            val zeroPrice = BigDecimal(0.0)
+
+            listOf(negativePrice, zeroPrice).forEach { invalidPrice ->
                 val expense = ExpenseRequestBuilder().apply { price = invalidPrice }.build()
 
                 val violations = validate(expense)

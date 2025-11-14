@@ -11,11 +11,14 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockHttpServletResponse
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 
+// TODO: Integration tests not pointing to test database
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 internal class ExpenseControllerIntegrationTest @Autowired constructor(
     private val mockMvc: MockMvc
 ) : BehaviorSpec({
@@ -53,7 +56,7 @@ internal class ExpenseControllerIntegrationTest @Autowired constructor(
             }
 
             then("returns the appropriate validation error message") {
-                assertThat(result.contentAsString).contains("Priority must be between 1 (min) and 4 (max).")
+                assertThat(result.contentAsString).contains("Priority is required.")
             }
         }
     }
@@ -134,8 +137,8 @@ internal class ExpenseControllerIntegrationTest @Autowired constructor(
         }
     }
 
-    given("a request with an invalid group field") {
-        val expenseRequest = readJsonResource("json/requests", "expense_request_invalid_group")
+    given("a request with an invalid grouping field") {
+        val expenseRequest = readJsonResource("json/requests", "expense_request_invalid_grouping")
 
         `when`("the request is submitted to the endpoint") {
             val result = mockMvc.post("/expenses") {
@@ -148,7 +151,7 @@ internal class ExpenseControllerIntegrationTest @Autowired constructor(
             }
 
             then("returns the appropriate validation error message") {
-                assertThat(result.contentAsString).contains("Group is required.")
+                assertThat(result.contentAsString).contains("Grouping is required.")
             }
         }
     }
@@ -172,9 +175,9 @@ internal class ExpenseControllerIntegrationTest @Autowired constructor(
                 assertThat(errors).containsEntry("name", "Name is required.")
                 assertThat(errors).containsEntry("category", "Category is required.")
                 assertThat(errors).containsEntry("price", "Price must be greater than R$ 0,00.")
-                assertThat(errors).containsEntry("priority", "Priority must be between 1 (min) and 4 (max).")
+                assertThat(errors).containsEntry("priority", "Priority is required.")
                 assertThat(errors).containsEntry("url", "URL must be valid.")
-                assertThat(errors).containsEntry("group", "Group is required.")
+                assertThat(errors).containsEntry("grouping", "Grouping is required.")
             }
         }
     }

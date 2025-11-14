@@ -7,6 +7,7 @@ import com.polymatus.financialcontrolservice.domain.usecases.inputs.ExpenseCreat
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Positive
 import org.hibernate.validator.constraints.URL
+import java.math.BigDecimal
 
 data class ExpenseRequest(
 
@@ -20,7 +21,7 @@ data class ExpenseRequest(
     val category: String,
 
     @field:Positive(message = "Price must be greater than R$ 0,00.")
-    val price: Double,
+    val price: BigDecimal,
 
     val description: String?,
     val place: String?,
@@ -34,6 +35,7 @@ data class ExpenseRequest(
     val grouping: String
 ) {
 
+    // TODO: Move enum parsing tests to proper class
     fun toInput() = ExpenseCreationInput(
         priority = Priority.from(priority),
         name = name,

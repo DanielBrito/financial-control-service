@@ -1,5 +1,5 @@
 {
-  "priority": "RANDOM",
+  "priority": "",
   "name": "",
   "category": "",
   "price": 0.0,
@@ -7,5 +7,5 @@
   "place": null,
   "url": "htp://www.amazon.com/dell-g15",
   "comment": null,
-  "group": ""
+  "grouping": ""
 }
