@@ -7,6 +7,6 @@ CREATE TABLE tracking(
     url               VARCHAR,
     status            VARCHAR(100),
     created_at        TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at        TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP
+    updated_at        TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (expense_id) REFERENCES expenses(id) ON DELETE CASCADE
 );

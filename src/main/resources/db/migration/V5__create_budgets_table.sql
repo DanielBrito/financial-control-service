@@ -7,6 +7,6 @@ CREATE TABLE budgets(
     description VARCHAR(255),
     preference  INTEGER,
     created_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP
+    updated_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (expense_id) REFERENCES expenses(id) ON DELETE CASCADE
 );
