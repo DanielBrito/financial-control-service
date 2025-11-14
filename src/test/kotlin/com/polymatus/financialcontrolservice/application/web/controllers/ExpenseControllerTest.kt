@@ -1,6 +1,6 @@
-package com.polymatus.financialcontrolservice.controllers
+package com.polymatus.financialcontrolservice.application.web.controllers
 
-import com.polymatus.financialcontrolservice.controllers.resources.ExpenseRequest
+import com.polymatus.financialcontrolservice.application.web.controllers.dtos.ExpenseRequest
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat

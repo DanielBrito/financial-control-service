@@ -1,5 +1,5 @@
 {
-  "priority": 1,
+  "priority": "LOW",
   "name": "Notebook",
   "category": "ELECTRONIC",
   "price": 1200.00,

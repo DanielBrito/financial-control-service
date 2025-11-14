@@ -1,5 +1,6 @@
-package com.polymatus.financialcontrolservice.controllers.resources
+package com.polymatus.financialcontrolservice.application.web.controllers.dtos
 
+import com.polymatus.financialcontrolservice.common.builders.ExpenseRequestBuilder
 import io.kotest.core.spec.style.BehaviorSpec
 import jakarta.validation.ConstraintViolation
 import jakarta.validation.Validation
@@ -14,17 +15,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
     given("an expense request") {
 
         `when`("it is valid") {
-            val validExpense = ExpenseRequest(
-                priority = 3,
-                name = "Laptop",
-                category = "ELECTRONICS",
-                price = 2500.0,
-                description = "Dell XPS 13",
-                place = "Amazon",
-                url = "https://amazon.com/dell-xps-13",
-                comment = "For gaming",
-                group = "GENERAL"
-            )
+            val validExpense = ExpenseRequestBuilder.build()
 
             val violations = validate(validExpense)
 
@@ -36,7 +27,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
         `when`("the priority is out of range") {
             listOf(0, 5).forEach { invalidPriority ->
                 val expense = ExpenseRequest(
-                    priority = invalidPriority,
+                    priority = "RANDOM",
                     name = "Laptop",
                     category = "ELECTRONICS",
                     price = 25.0,
@@ -44,7 +35,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
                     place = null,
                     url = null,
                     comment = null,
-                    group = "GENERAL"
+                    grouping = "GENERAL"
                 )
 
                 val violations = validate(expense)
@@ -61,7 +52,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
 
         `when`("the name is blank") {
             val expense = ExpenseRequest(
-                priority = 2,
+                priority = "MEDIUM",
                 name = "",
                 category = "ELECTRONICS",
                 price = 25.0,
@@ -69,7 +60,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
                 place = null,
                 url = null,
                 comment = null,
-                group = "GENERAL"
+                grouping = "GENERAL"
             )
 
             val violations = validate(expense)
@@ -85,7 +76,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
 
         `when`("the category is blank") {
             val expense = ExpenseRequest(
-                priority = 2,
+                priority = "MEDIUM",
                 name = "Laptop",
                 category = "",
                 price = 25.0,
@@ -93,7 +84,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
                 place = null,
                 url = null,
                 comment = null,
-                group = "GENERAL"
+                grouping = "GENERAL"
             )
 
             val violations = validate(expense)
@@ -110,7 +101,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
         `when`("the price is negative or zero") {
             listOf(-123.0, 0.0).forEach { invalidPrice ->
                 val expense = ExpenseRequest(
-                    priority = 2,
+                    priority = "MEDIUM",
                     name = "Laptop",
                     category = "ELECTRONICS",
                     price = invalidPrice,
@@ -118,7 +109,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
                     place = null,
                     url = null,
                     comment = null,
-                    group = "GENERAL"
+                    grouping = "GENERAL"
                 )
 
                 val violations = validate(expense)
@@ -135,7 +126,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
 
         `when`("the URL is invalid") {
             val expense = ExpenseRequest(
-                priority = 2,
+                priority = "MEDIUM",
                 name = "Laptop",
                 category = "ELECTRONICS",
                 price = 25.0,
@@ -143,7 +134,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
                 place = null,
                 url = "htp://amazon",
                 comment = null,
-                group = "GENERAL"
+                grouping = "GENERAL"
             )
 
             val violations = validate(expense)
@@ -159,7 +150,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
 
         `when`("the group is blank") {
             val expense = ExpenseRequest(
-                priority = 2,
+                priority = "MEDIUM",
                 name = "Laptop",
                 category = "ELECTRONICS",
                 price = 25.0,
@@ -167,7 +158,7 @@ internal class ExpenseRequestTest : BehaviorSpec({
                 place = null,
                 url = null,
                 comment = null,
-                group = ""
+                grouping = ""
             )
 
             val violations = validate(expense)

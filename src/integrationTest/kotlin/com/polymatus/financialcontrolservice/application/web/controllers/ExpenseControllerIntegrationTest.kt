@@ -1,6 +1,6 @@
-package com.polymatus.financialcontrolservice.inbound.controllers
+package com.polymatus.financialcontrolservice.application.web.controllers
 
-import com.polymatus.financialcontrolservice.controllers.resources.InvalidArgumentErrorResponse
+import com.polymatus.financialcontrolservice.application.web.controllers.dtos.InvalidArgumentErrorResponse
 import com.polymatus.financialcontrolservice.helpers.CustomObjectMapper
 import com.polymatus.financialcontrolservice.helpers.FileLoader.readJsonResource
 import io.kotest.core.spec.style.BehaviorSpec
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.http.MediaType
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
@@ -29,7 +29,7 @@ internal class ExpenseControllerIntegrationTest @Autowired constructor(
 
         `when`("the request is submitted to the endpoint") {
             val result = mockMvc.post("/expenses") {
-                contentType = APPLICATION_JSON
+                contentType = MediaType.APPLICATION_JSON
                 content = expenseRequest
             }.andReturn()
 
@@ -44,7 +44,7 @@ internal class ExpenseControllerIntegrationTest @Autowired constructor(
 
         `when`("the request is submitted to the endpoint") {
             val result = mockMvc.post("/expenses") {
-                contentType = APPLICATION_JSON
+                contentType = MediaType.APPLICATION_JSON
                 content = expenseRequest
             }.andReturn().response
 
@@ -63,7 +63,7 @@ internal class ExpenseControllerIntegrationTest @Autowired constructor(
 
         `when`("the request is submitted to the endpoint") {
             val result = mockMvc.post("/expenses") {
-                contentType = APPLICATION_JSON
+                contentType = MediaType.APPLICATION_JSON
                 content = expenseRequest
             }.andReturn().response
 
@@ -82,7 +82,7 @@ internal class ExpenseControllerIntegrationTest @Autowired constructor(
 
         `when`("the request is submitted to the endpoint") {
             val result = mockMvc.post("/expenses") {
-                contentType = APPLICATION_JSON
+                contentType = MediaType.APPLICATION_JSON
                 content = expenseRequest
             }.andReturn().response
 
@@ -101,7 +101,7 @@ internal class ExpenseControllerIntegrationTest @Autowired constructor(
 
         `when`("the request is submitted to the endpoint") {
             val result = mockMvc.post("/expenses") {
-                contentType = APPLICATION_JSON
+                contentType = MediaType.APPLICATION_JSON
                 content = expenseRequest
             }.andReturn().response
 
@@ -120,7 +120,7 @@ internal class ExpenseControllerIntegrationTest @Autowired constructor(
 
         `when`("the request is submitted to the endpoint") {
             val result = mockMvc.post("/expenses") {
-                contentType = APPLICATION_JSON
+                contentType = MediaType.APPLICATION_JSON
                 content = expenseRequest
             }.andReturn().response
 
@@ -139,7 +139,7 @@ internal class ExpenseControllerIntegrationTest @Autowired constructor(
 
         `when`("the request is submitted to the endpoint") {
             val result = mockMvc.post("/expenses") {
-                contentType = APPLICATION_JSON
+                contentType = MediaType.APPLICATION_JSON
                 content = expenseRequest
             }.andReturn().response
 
@@ -158,7 +158,7 @@ internal class ExpenseControllerIntegrationTest @Autowired constructor(
 
         `when`("the request is submitted to the endpoint") {
             val result = mockMvc.post("/expenses") {
-                contentType = APPLICATION_JSON
+                contentType = MediaType.APPLICATION_JSON
                 content = expenseRequest
             }.andReturn().response
 

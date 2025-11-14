@@ -1,9 +1,9 @@
-package com.polymatus.financialcontrolservice.controllers
+package com.polymatus.financialcontrolservice.application.web.controllers.handlers
 
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.every
 import io.mockk.mockk
-import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpStatus
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -29,11 +29,11 @@ internal class GlobalExceptionHandlerTest : BehaviorSpec({
             val response = handler.handleValidationExceptions(exception)
 
             then("returns bad request status code") {
-                assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
+                Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
             }
 
             then("returns mapped response with the correct field and error message") {
-                assertThat(response.body?.errors).isEqualTo(mapOf("fieldName" to "default message"))
+                Assertions.assertThat(response.body?.errors).isEqualTo(mapOf("fieldName" to "default message"))
             }
         }
 
@@ -47,11 +47,11 @@ internal class GlobalExceptionHandlerTest : BehaviorSpec({
             val response = handler.handleValidationExceptions(exception)
 
             then("responds with bad request status code") {
-                assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
+                Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
             }
 
             then("returns mapped response with all fields and their error messages") {
-                assertThat(response.body?.errors).isEqualTo(
+                Assertions.assertThat(response.body?.errors).isEqualTo(
                     mapOf(
                         "field1" to "error message 1",
                         "field2" to "error message 2"
@@ -70,11 +70,11 @@ internal class GlobalExceptionHandlerTest : BehaviorSpec({
             val response = handler.handleJsonParseException(exception)
 
             then("responds with bad request status code") {
-                assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
+                Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
             }
 
             then("returns mapped response with error message") {
-                assertThat(response.body).isEqualTo(mapOf("error" to "Invalid request payload."))
+                Assertions.assertThat(response.body).isEqualTo(mapOf("error" to "Invalid request payload."))
             }
         }
     }
