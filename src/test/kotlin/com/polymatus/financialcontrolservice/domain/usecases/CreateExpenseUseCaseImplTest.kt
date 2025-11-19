@@ -8,11 +8,12 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 
-internal class CreateExpenseUseCaseTest : BehaviorSpec({
-    val expenseRepository = mockk<ExpenseRepository>()
-    val createExpenseUseCaseImpl = CreateExpenseUseCaseImpl(expenseRepository)
+internal class CreateExpenseUseCaseImplTest : BehaviorSpec({
 
     given("a create expense use case") {
+        val expenseRepository = mockk<ExpenseRepository>()
+        val createExpenseUseCaseImpl = CreateExpenseUseCaseImpl(expenseRepository)
+
         `when`("process is called with valid input") {
             val createExpenseInput = ExpenseCreationInputBuilder().build()
             val expense = mockk<Expense>()
