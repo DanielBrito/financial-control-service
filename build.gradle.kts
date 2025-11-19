@@ -103,22 +103,14 @@ sonar {
 }
 
 pitest {
-    val classesToSkip = listOf(
-        "com.polymatus.financialcontrolservice.FinancialControlServiceApplicationKt",
-        "com.polymatus.financialcontrolservice.infrastructure.repositories.entities.*",
-        "com.polymatus.financialcontrolservice.application.web.controllers.handlers.*",
-    )
-
-    junit5PluginVersion.set("1.2.0")
-    targetClasses.set(listOf("com.polymatus.*"))
-    excludedClasses.set(classesToSkip)
-    targetTests.set(listOf("com.polymatus.financialcontrolservice.*"))
+    junit5PluginVersion.set("1.2.3")
     excludedMethods.set(listOf("get*"))
     outputFormats.set(listOf("HTML"))
     threads.set(2)
     jvmArgs.set(listOf("-Xmx2G"))
     mutationThreshold.set(80)
     failWhenNoMutations.set(false)
+    avoidCallsTo.set(setOf("kotlin.jvm.internal"))
 
     mainSourceSets.set(listOf(sourceSets["main"]))
     testSourceSets.set(listOf(sourceSets["test"]))
@@ -134,11 +126,6 @@ configurations.all {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
-}
-
-tasks.named<Test>("integrationTest") {
-    useJUnitPlatform()
-    systemProperty("spring.profiles.active", "test")
 }
 
 fun ignorePackagesInJacocoReport(classDirectories: ConfigurableFileCollection) {
