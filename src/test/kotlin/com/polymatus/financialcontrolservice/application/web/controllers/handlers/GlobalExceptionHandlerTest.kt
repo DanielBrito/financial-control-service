@@ -1,6 +1,7 @@
 package com.polymatus.financialcontrolservice.application.web.controllers.handlers
 
 import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.extensions.system.captureStandardOut
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
@@ -75,6 +76,14 @@ internal class GlobalExceptionHandlerTest : BehaviorSpec({
 
             then("it should return mapped response with error message") {
                 assertThat(response.body).isEqualTo(mapOf("error" to "Invalid request payload."))
+            }
+
+            then("it should log the parsing error message") {
+                val output = captureStandardOut { handler.handleJsonParseException(exception) }
+
+                assertThat(output).contains(
+                    "Failed to process request - HttpMessageNotReadableException: Failed to parse JSON"
+                )
             }
         }
     }
