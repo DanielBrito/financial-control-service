@@ -2,9 +2,8 @@ package com.polymatus.financialcontrolservice.domain.usecases
 
 import com.polymatus.financialcontrolservice.domain.repositories.ExpenseRepository
 import com.polymatus.financialcontrolservice.domain.usecases.inputs.ExpenseCreationInput
-import org.springframework.stereotype.Service
 
-@Service
+@UseCase
 class CreateExpenseUseCaseImpl(
     private val expenseRepository: ExpenseRepository
 ) : CreateExpenseUseCase {
