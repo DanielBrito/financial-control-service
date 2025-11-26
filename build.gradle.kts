@@ -1,3 +1,5 @@
+import info.solidsoft.gradle.pitest.PitestPluginExtension
+
 plugins {
 	kotlin("jvm") version "2.0.10"
 	kotlin("plugin.spring") version "2.0.10"
@@ -32,6 +34,7 @@ val mockkVersion = "1.13.12"
 val jacksonVersion = "2.18.2"
 val kotestVersion = "5.9.1"
 val kotestExtensionsSpringVersion = "1.3.0"
+val wiremockVersion = "3.0.1"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
@@ -56,8 +59,9 @@ dependencies {
 	testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 	testImplementation("io.kotest:kotest-property:$kotestVersion")
 	testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestExtensionsSpringVersion")
+    testImplementation("com.github.tomakehurst:wiremock-standalone:${wiremockVersion}")
 
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 	detekt("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
 	detekt("io.gitlab.arturbosch.detekt:detekt-cli:$detektVersion")
@@ -73,17 +77,21 @@ detekt {
 	toolVersion = detektVersion
 	autoCorrect = true
 
+    config.setFrom(files("$projectDir/detekt.yml"))
+
     source.setFrom(
         files(
             "src/main/kotlin",
             "src/test/kotlin",
-            "src/integrationTest/kotlin"
+            "src/integrationTest/kotlin",
+            "src/componentTest/kotlin"
         )
     )
 }
 
 testSets {
     "integrationTest"()
+    "componentTest"()
 }
 
 sonar {
@@ -114,6 +122,10 @@ pitest {
 
     mainSourceSets.set(listOf(sourceSets["main"]))
     testSourceSets.set(listOf(sourceSets["test"]))
+}
+
+configure<PitestPluginExtension> {
+    targetClasses.set(listOf("com.polymatus.financialcontrolservice.*"))
 }
 
 configurations.all {
