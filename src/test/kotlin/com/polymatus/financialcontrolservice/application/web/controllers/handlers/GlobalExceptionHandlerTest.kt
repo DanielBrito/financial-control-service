@@ -60,6 +60,21 @@ internal class GlobalExceptionHandlerTest : BehaviorSpec({
                 )
             }
         }
+
+        `when`("a field error has no default message") {
+            val bindingResult = mockBindingResultWith(FieldError("obj", "fieldNoMsg", ""))
+            val exception = MethodArgumentNotValidException(methodParameter, bindingResult)
+
+            val response = handler.handleValidationExceptions(exception)
+
+            then("it should respond with bad request status code") {
+                assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
+            }
+
+            then("it should map the field to an empty message when defaultMessage is null") {
+                assertThat(response.body?.errors).isEqualTo(mapOf("fieldNoMsg" to ""))
+            }
+        }
     }
 
     given("a JSON payload parsing") {
