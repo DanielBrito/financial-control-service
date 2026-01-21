@@ -105,7 +105,8 @@ sonar {
 		property("sonar.host.url", "https://sonarcloud.io")
 		property("sonar.exclusions", "**/polymatus/**/*.java," +
 				"**/polymatus/**/*.kts," +
-				"**/polymatus/**/FinancialControlServiceApplication.kt"
+				"**/polymatus/**/FinancialControlServiceApplication.kt, " +
+                "**/polymatus/**/infrastructure/repositories/entities/**",
 		)
 	}
 }
@@ -149,6 +150,7 @@ fun ignorePackagesInJacocoReport(classDirectories: ConfigurableFileCollection) {
 						"**/polymatus/**/*.java",
 						"**/polymatus/**/*.kts",
                         "**/polymatus/**/FinancialControlServiceApplication*",
+                        "**/polymatus/**/infrastructure/repositories/entities/**",
 					)
 				}
 			}
