@@ -45,6 +45,7 @@ out/
 *.iml
 *.ipr
 *.iws
+.kotlin/
 
 ##############################
 ## Eclipse

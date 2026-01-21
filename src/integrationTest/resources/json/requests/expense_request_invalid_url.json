@@ -1,5 +1,5 @@
 {
-  "priority": 1,
+  "priority": "LOW",
   "name": "Notebook",
   "category": "ELECTRONIC",
   "price": 150.75,
@@ -7,5 +7,5 @@
   "place": "Amazon",
   "url": "htp://www.amazon.com/dell-g15",
   "comment": "For gaming",
-  "group": "GENERAL"
+  "grouping": "GENERAL"
 }
